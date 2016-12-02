@@ -56,9 +56,10 @@ Kassi::Application.configure do
   end
 
   # Use a different cache store in production
-  config.cache_store = :redis_store, {
-    host: ENV["redis_host"],
-    port: ENV["redis_port"],
+  config.cache_store = :readthis_store, {
+    redis: { host: ENV["redis_host"],
+             port: ENV["redis_port"],
+             driver: :hiredis},
     db: ENV["redis_db"],
     namespace: "cache"
   }
