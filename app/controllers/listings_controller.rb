@@ -227,6 +227,7 @@ class ListingsController < ApplicationController
       received_positive_testimonials: received_positive_testimonials,
       feedback_positive_percentage: feedback_positive_percentage,
       youtube_link_ids: youtube_link_ids,
+      manage_availability_props: manage_availability_props(@current_community, @listing),
       blocked_dates_result: blocked_dates_result,
       blocked_dates_end_on: DateUtils.to_midnight_utc(blocked_dates_end_on)
     }
@@ -1032,5 +1033,11 @@ class ListingsController < ApplicationController
     listing.listing_images.pluck(:id).each { |image_id|
       Delayed::Job.enqueue(CreateSquareImagesJob.new(image_id))
     }
+  end
+
+  def manage_availability_props(community, listing)
+    ManageAvailabilityHelper.availability_props(
+      community: community,
+      listing: listing)
   end
 end
